@@ -1,0 +1,6 @@
+const test=require('node:test'),assert=require('node:assert/strict'),g=require('../dist/banner-core.js');
+test('whole banner is constrained, not just its center',()=>{const room=g.polygons('M0 0H100V100H0Z');assert.equal(g.rectFits(room,{x:50,y:50},40,20),true);assert.equal(g.rectFits(room,{x:10,y:50},40,20),false);const p=g.move(room,{x:50,y:50},{x:200,y:50},40,20);assert.ok(p.x<=80.01);assert.equal(g.rectFits(room,p,40,20),true)});
+test('drag cannot cross the missing corner of an L shaped room',()=>{const room=g.polygons('M0 0H200V80H80V200H0Z');const p=g.move(room,{x:150,y:40},{x:40,y:150},20,20);assert.ok(p.y<=70.01);assert.equal(g.rectFits(room,p,20,20),true)});
+test('cannot jump between disconnected areas',()=>{const room=g.polygons('M0 0H100V100H0Z M200 0H300V100H200Z');const p=g.move(room,{x:50,y:50},{x:250,y:50},20,20);assert.ok(p.x<=90.01)});
+test('finds an in-room position for a badge initially too close to a wall',()=>{const room=g.polygons('M0 0H100V100H0Z');const p=g.nearestFit(room,{x:2,y:50},40,20);assert.ok(p);assert.equal(g.rectFits(room,p,40,20),true)});
+test('diagonal balcony boundaries are respected',()=>{const room=g.polygons('M0 40L100 0V200H0Z');assert.equal(g.rectFits(room,{x:50,y:100},50,40),true);assert.equal(g.rectFits(room,{x:20,y:30},30,30),false)});
