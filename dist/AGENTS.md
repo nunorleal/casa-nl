@@ -307,3 +307,39 @@ Por pedido explícito posterior, remover gráficos, períodos e notas de histór
 # Ícones uniformes de atualizar e definições — 1.95
 
 Usar exclusivamente icon('refresh') e icon('settings') do catálogo app.js. Refresh é SVG de duas setas simétricas; settings é engrenagem radial de oito dentes centrada em12,12. Ambos usam viewBox24×24, traço1,8, cantos redondos, fillnone e data-ui-icon para identificação. Não voltar a usar glifos Unicode, paths isolados ou o antigo desenho assimétrico. Aplicado aos popups, cozinha, sala, secretária, meteorologia e rodapé; os atalhos criados em consumption.js também usam o catálogo. Preservar cores, IDs, dimensões, labels, listeners e regras de comandos. Validação em fixture/iPad: uma única variante SVG de cada tipo e ícone novo no rodapé, sem erros de consola;209 testes aprovados. Prova review/icones-uniformes-1.95.png.
+
+# Acesso separado aos estores e realces azuis — 1.96
+
+Clicar na divisão/nome abre apenas o contexto room: iluminação, sensores e informação própria, sem controlos/consumo do estore. Banner e blind-window-trigger abrem contexto blind no room-dialog, preservado em cada redraw, com os controlos existentes e consumo só do cover. Lista global de estores usa o mesmo contexto. Validar id antes de abrir. Não enviar comandos por abertura de popup. Consultas room excluem o cover; ensureBlindFresh e refreshEquipment blind consultam só o seu ID. Preservar os validadores, alvos/pendentes e comandos explícitos anteriores.
+
+As quatro áreas transparentes sobre janelas têm teclado, label e mínimo44px, não dependem da visibilidade dos banners e não alteram renders. Realçar apenas no hover/foco, à semelhança da consola. Por pedido explícito posterior, usar azul em realces de janelas, TV, secretária e cozinha e nos símbolos/texto de atividade das máquinas e caldeira. Variáveis plan-highlight em blue-glass.css e fundo banner-glass; esta regra substitui os realces/símbolos verdes anteriormente solicitados. Não mudar limiares/animações ou cores semânticas de alimentação/alarme. Ver ESTORES-ACESSO.md e testes blind-access;211 testes e fixture exclusivamente fictícia, zero atuações. Prova review/realces-azuis-estores-1.96.png.
+
+# Números dos banners sem negrito — 1.97
+
+Por pedido do utilizador, percentagens dos estores (.blind-pin-copy strong) e potência da casa na planta (.energy-pin strong) usam font-weight400. Aplicar só aos banners da planta, preservando tipografia dos popups, ícones, leituras e comportamento. Verificação de estilo computado:400 nos quatro estores e no contador. Prova review/banners-sem-negrito-1.97.png.
+
+# MeteoNL ampliado por inatividade — 1.98
+
+A opção focusSeconds nas preferências casa-nl-meteo-v1 controla a ampliação automática do hero:0 desativa;15,30,60,120,300 segundos;30 por omissão. Validar no meteo-core, preservar backups antigos sem o campo e incluir exportação/importação existente. A lógica meteo-focus-core é exclusivamente de apresentação. Suspender/reiniciar a contagem nas definições, documento oculto ou iframe Meteo oculto pela Casa. Não interferir com o temporizador Casa→Meteo.
+
+A vista ampliada mostra data, hora, cidade, tempo atual, temperatura Real e nascer/pôr do sol, adaptada ao iPad vertical. Uma camada button sobre todo o ecrã recebe o primeiro click/toque e só devolve a vista normal; não desmontar no pointerdown nem deixar o click atingir a lâmpada. Escape/Enter/Espaço também permitem regressar. Não gerar pedidos Cloud ou comandos. Ver METEO-AMPLIADO.md;214 testes aprovados e verificação820×1180 com zero atuações. Prova review/meteo-ampliado-1.98.png.
+
+# Candeeiros interativos — 1.99
+
+CasaLamps.trigger gera três botões transparentes e circulares centrados nas mesmas coordenadas target dos discos master/bedroom2/living. Mínimo44px, realce hover/focus-visible com variáveis plan-highlight azuis, sem alterar renders ou camadas de iluminação. Independentes da visibilidade dos nomes e dos estores.
+
+Clique/teclado abre room-dialog no contexto light, conservado nos redraws, com iluminação, consumo e atalho de definições para o ID do candeeiro. decorateRoom light decora só a luz; abertura/refresh consultam apenas o ID da luz, nunca cover/sensores. Preservar guards e comandos explícitos; abrir popup/definições não atua. O atalho abre a secção Luzes existente e foca a associação correspondente sem a modificar. Versão1.99,215 testes e fixture820×1180;zero atuações. Prova review/candeeiros-realce-1.99.png.
+
+# Paleta vermelha do MeteoNL — 2.00
+
+A preferência opcional nightPalette aceita color/red;por omissão color para preservar o modo anterior. A opção Cores do modo noturno fica em Modo de cabeceira. Aplicar vermelho só quando a lógica night existente está ativa (horário automático ou Sempre ativo), nunca apenas porque a paisagem é noturna. Fora do modo de cabeceira manter cores originais.
+
+night-red-filter é uma camada fixa com mix-blend-mode:multiply, RGB(r,0,0), sem pointer-events, acima de toda a interface Meteo; r segue255*(1-dim/100). Abrange paisagem, ícones, texto, definições e vista ampliada sem alterar layout ou eventos. O colorido mantém os estilos anteriores. Preferência validada em meteo-core, guardada/exportada na chave Meteo existente; backups antigos compatíveis. Sem novos pedidos/atuações. Verificado820×1180:vermelho normal/ampliado,regresso ao colorido,ausência do filtro com night off e zero comandos/erros;216 testes aprovados. Prova review/meteo-vermelho-2.00.png.
+
+# Popups sóbrios e uniformes — 2.01
+
+Por pedido do utilizador, usar o termoventilador como modelo visual dos popups dos equipamentos: título, contexto curto/estado, imagem quando existe, dois cartões de consumo e fila de controlos circulares de alimentação/atualizar/definições. popup-ui.js carrega antes de consumption.js e reorganiza os botões existentes, conservando IDs, listeners, disponibilidade e associações. Não recriar atuadores nem alterar comandos. consumption chama normalize após montar os cartões; manter a operação idempotente durante redraws.
+
+Retirar notas explicativas dos popups: limiares e alimentação da cozinha, TV/PS5, encerramento de servidor/disco, cálculo do contador, notas de simulação/Cloud e confirmação redundante de sucesso. Preservar estados, dados antigos, erros e confirmações pendentes. Esta instrução posterior substitui a obrigação anterior de mostrar estas notas nos popups. Não apagar ajuda de configuração ou validação dos formulários. Saúde/online normal não gera parágrafos repetidos; ausência de medições continua explícita e discreta, sem inventar zero.
+
+Apenas forma é comum; estores conservam abertura/parar/range, alarme distingue armação/disparo, contador permanece só leitura com escala e margem, multimédia/secretária conservam imagens interativas. Imagens, animações, arrasto e chaves de configuração intactos. Testado820×1180 com fixture fictícia (candeeiro,cozinha,termoventilador,multimédia,contador,ventoinha,alarme,EV),refresh funcional,zero atuações/erros e216 testes aprovados. Prova review/popups-cozinha-2.01.png.

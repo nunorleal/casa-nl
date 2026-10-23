@@ -4,6 +4,10 @@
   --banner-border:rgba(197,222,241,.38);
   --banner-text:#f4f8fc;
   --banner-muted:#d0e1ee;
+  --plan-highlight-bg:#75acd842;
+  --plan-highlight-border:#c5def1;
+  --plan-highlight-outline:#426e8c;
+  --plan-highlight-glow:#75acd833;
 }
 .room-pin,.room-pin.is-off,.blind-pin,.energy-pin,.cellar-pin,.ev-badge,.alarm-pin,.fan-pin,
 .home-status,.bottom-dock,.media-device-banner,.office-image-heading{

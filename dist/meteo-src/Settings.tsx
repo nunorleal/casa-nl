@@ -117,6 +117,18 @@ export function Settings({
         <section>
           <h3>Relógio e unidades</h3>
           <label>
+            Ampliar relógio após inatividade
+            <select value={value.focusSeconds} onChange={(e) => set("focusSeconds", Number(e.target.value))}>
+              <option value={0}>Desativado</option>
+              <option value={15}>15 segundos</option>
+              <option value={30}>30 segundos</option>
+              <option value={60}>1 minuto</option>
+              <option value={120}>2 minutos</option>
+              <option value={300}>5 minutos</option>
+            </select>
+          </label>
+          <p>Amplia a data, o relógio e a meteorologia. Um toque devolve a vista normal. A ampliação fica suspensa enquanto estiver nas definições.</p>
+          <label>
             Formato
             <select
               value={value.clock12 ? "12" : "24"}
@@ -212,6 +224,14 @@ export function Settings({
               <option value="off">Desativado</option>
             </select>
           </label>
+          <label>
+            Cores do modo noturno
+            <select value={value.nightPalette} onChange={(e) => set("nightPalette", e.target.value as Prefs["nightPalette"])}>
+              <option value="color">Colorido esbatido</option>
+              <option value="red">Vermelho</option>
+            </select>
+          </label>
+          <p>A paleta escolhida aplica-se apenas quando o modo de cabeceira está ativo, incluindo a vista ampliada.</p>
           <div className="schedule">
             <label>
               Das

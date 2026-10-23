@@ -27,8 +27,8 @@
    loading.hidden=false;loadTimer=setTimeout(()=>{loadMessage.textContent='Não foi possível carregar a MeteoNL. Volte à casa e atualize a página.'},15000);
    if(location.protocol==='file:'){
     const base=new URL('meteo/',document.baseURI).href.replace(/&/g,'&amp;').replace(/"/g,'&quot;');
-    frame.srcdoc=`<!doctype html><html lang="pt"><head><meta charset="utf-8"><base href="${base}"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>MeteoNL · Casa NL</title><link rel="stylesheet" href="assets/app-1.96.css?v=1.96"></head><body><div id="root"></div><script src="assets/app-1.96.js?v=1.96"><\/script></body></html>`;
-   }else frame.src='meteo/index.html?v=1.96';
+    frame.srcdoc=`<!doctype html><html lang="pt"><head><meta charset="utf-8"><base href="${base}"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>MeteoNL · Casa NL</title><link rel="stylesheet" href="assets/app-2.01.css?v=2.01"></head><body><div id="root"></div><script src="assets/app-2.01.js?v=2.01"><\/script></body></html>`;
+   }else frame.src='meteo/index.html?v=2.01';
    loaded=true;
   }
   window.CasaShelly?.ensureFresh('master');window.CasaShelly?.ensureFresh('balcony');frame.focus();
@@ -40,7 +40,7 @@
  }
  function settings(){home(false);document.getElementById('open-shelly').click()}
  function toggleLamp(){return CasaMeteoCore.lampAction(window.CasaShelly,settings)}
- window.CasaMeteoBridge={preferences:CasaMeteoCore.preferences,ready,open,home:()=>home(),settings,toggleLamp,
+ window.CasaMeteoBridge={visible:()=>!host.hidden,preferences:CasaMeteoCore.preferences,ready,open,home:()=>home(),settings,toggleLamp,
   realTemperature:()=>CasaMeteoCore.realTemperature(window.CasaShelly?.sensorBinding('balcony'),window.CasaShelly?.sensorReading('balcony')),
   lamp:()=>window.CasaShelly?.lampSnapshot('master')||{configured:false,state:null,busy:false,ready:false,error:''},
   city:()=>window.CasaEnvironment?.getState().city,

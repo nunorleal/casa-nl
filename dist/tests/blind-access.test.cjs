@@ -7,5 +7,9 @@ test('division and shutter render separate controls and retain that context on r
 });
 test('opening or refreshing a division does not query its cover; shutter access reads only its own ID',()=>{
  const calls=[],b={deviceId:'aa1111'},l={deviceId:'bb2222'},s={deviceId:'cc3333'},ctx={Date:{now:()=>100000},binding:()=>b,lightBinding:()=>l,sensorBinding:()=>s,reading:()=>null,lightReading:()=>null,sensorReading:()=>null,config:{windowBindings:{master:{deviceId:'dd4444'}}},refresh:o=>{calls.push(o);return Promise.resolve()}};vm.createContext(ctx);vm.runInContext(shelly.slice(shelly.indexOf(' function ensureFresh(id){'),shelly.indexOf(' function energySnapshot(){')),ctx);
- ctx.ensureFresh('master');assert.deepEqual([...calls.pop().ids],['bb2222','cc3333']);ctx.ensureBlindFresh('master');assert.deepEqual([...calls.pop().ids],['aa1111']);ctx.refreshEquipment('blind','master');assert.deepEqual([...calls.pop().ids],['aa1111']);ctx.refreshEquipment('room','master');assert.deepEqual([...calls.pop().ids],['bb2222','cc3333','dd4444']);
+ ctx.ensureFresh('master');assert.deepEqual([...calls.pop().ids],['bb2222','cc3333']);ctx.ensureBlindFresh('master');assert.deepEqual([...calls.pop().ids],['aa1111']);ctx.refreshEquipment('blind','master');assert.deepEqual([...calls.pop().ids],['aa1111']);ctx.refreshEquipment('room','master');assert.deepEqual([...calls.pop().ids],['bb2222','cc3333','dd4444']);ctx.refreshEquipment('light','master');assert.deepEqual([...calls.pop().ids],['bb2222']);
+});
+
+test('lamp context decorates only its light without unrelated door, window, sensor or shutter controls',()=>{
+ const calls=[],ctx={decorateLight:r=>calls.push(r.id),window:{},document:{}};vm.createContext(ctx);vm.runInContext(shelly.slice(shelly.indexOf(" function decorateRoom(r,view='room'){"),shelly.indexOf(' let transportStorage=')),ctx);ctx.decorateRoom({id:'living'},'light');assert.deepEqual(calls,['living']);
 });

@@ -3,7 +3,8 @@ import { RealTemperature } from "./RealTemperature";
 import { useShellyLamp } from "./useShellyLamp";
 import { assetUrl } from "./assets";
 import { APP_VERSION } from "./app-info";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useFocusView } from "./useFocusView";
 import {
   Settings as Gear,
   Lightbulb,
@@ -113,6 +114,9 @@ export default function App() {
     [loading, setLoading] = useState(false),
     [offline, setOffline] = useState(!navigator.onLine),
     [retry, setRetry] = useState(0);
+  const focus = useFocusView(prefs.focusSeconds, open);
+  const dismissFocus = useRef<HTMLButtonElement>(null);
+  useEffect(() => { if (focus.expanded) dismissFocus.current?.focus({ preventScroll: true }); }, [focus.expanded]);
   useEffect(() => {
     save("casa-nl-meteo-v1", prefs);
   }, [prefs]);
@@ -263,7 +267,7 @@ export default function App() {
         className={"night-veil " + (night ? "on" : "")}
         style={{ opacity: night ? prefs.dim / 100 : 0 }}
       />
-      <main className={night ? "bedside" : ""}>
+      <main data-night-palette={night ? prefs.nightPalette : "day"} className={[night ? "bedside" : "", focus.expanded ? "focus-view" : ""].filter(Boolean).join(" ")} data-focus-view={focus.expanded ? "expanded" : "normal"}>
         <nav className="topbar">
           <div className="brand">
             <span className="wordmark">
@@ -592,6 +596,7 @@ export default function App() {
           </a>
         </footer>
       </main>
+      {focus.expanded && <button ref={dismissFocus} className="focus-dismiss" aria-label="Voltar à vista normal" onClick={(event) => { event.preventDefault(); event.stopPropagation(); focus.wake(); }} onKeyDown={(event) => { if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); focus.wake(); } }}><span>Toque para voltar</span></button>}
       {open && (
         <Settings
           value={prefs}
@@ -599,6 +604,7 @@ export default function App() {
           onClose={() => setOpen(false)}
         />
       )}
+      {night && prefs.nightPalette === "red" && <div className="night-red-filter" aria-hidden="true" style={{backgroundColor: `rgb(${Math.round(255 * (1 - prefs.dim / 100))}, 0, 0)`}} />}
     </>
   );
 }

@@ -12,10 +12,10 @@
  }
  function preferences(value){
   if(!value||typeof value!=='object'||Array.isArray(value))throw Error('Preferências MeteoNL inválidas.');
-  const choices={night:['auto','on','off'],temp:['C','F'],wind:['kmh','ms','mph'],demo:['auto','sunny','cold','night','rain','storm','fog','sunset']};
+  const choices={nightPalette:['color','red'],night:['auto','on','off'],temp:['C','F'],wind:['kmh','ms','mph'],demo:['auto','sunny','cold','night','rain','storm','fog','sunset']};
   const booleans=['seconds','clock12','animations','dynamic'];const result={};
   for(const [k,v]of Object.entries(value)){
-   const valid=booleans.includes(k)?typeof v==='boolean':choices[k]?choices[k].includes(v):['start','end'].includes(k)?typeof v==='string'&&/^([01]\d|2[0-3]):[0-5]\d$/.test(v):['dim','effects','cold'].includes(k)?Number.isFinite(v)&&v>=(k==='cold'?-30:0)&&v<=(k==='cold'?40:100):false;
+   const valid=k==='focusSeconds'?[0,15,30,60,120,300].includes(v):booleans.includes(k)?typeof v==='boolean':choices[k]?choices[k].includes(v):['start','end'].includes(k)?typeof v==='string'&&/^([01]\d|2[0-3]):[0-5]\d$/.test(v):['dim','effects','cold'].includes(k)?Number.isFinite(v)&&v>=(k==='cold'?-30:0)&&v<=(k==='cold'?40:100):false;
    if(!valid)throw Error('Preferências MeteoNL inválidas.');result[k]=v;
   }return result;
  }

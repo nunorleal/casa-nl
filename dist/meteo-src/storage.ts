@@ -4,9 +4,11 @@ export type Settings = {
   city: City;
   seconds: boolean;
   clock12: boolean;
+  focusSeconds: number;
   animations: boolean;
   dynamic: boolean;
   night: "auto" | "on" | "off";
+  nightPalette: "color" | "red";
   start: string;
   end: string;
   dim: number;
@@ -20,9 +22,11 @@ export const defaults: Settings = {
   city: initialCity,
   seconds: false,
   clock12: false,
+  focusSeconds: 30,
   animations: true,
   dynamic: true,
   night: "auto",
+  nightPalette: "color",
   start: "23:00",
   end: "07:00",
   dim: 55,
