@@ -9,6 +9,9 @@ export type Settings = {
   dynamic: boolean;
   night: "auto" | "on" | "off";
   nightPalette: "color" | "red";
+  redSchedule: "night" | "custom";
+  redStart: string;
+  redEnd: string;
   start: string;
   end: string;
   dim: number;
@@ -27,6 +30,9 @@ export const defaults: Settings = {
   dynamic: true,
   night: "auto",
   nightPalette: "color",
+  redSchedule: "night",
+  redStart: "23:00",
+  redEnd: "07:00",
   start: "23:00",
   end: "07:00",
   dim: 55,
