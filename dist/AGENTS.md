@@ -343,3 +343,11 @@ Por pedido do utilizador, usar o termoventilador como modelo visual dos popups d
 Retirar notas explicativas dos popups: limiares e alimentação da cozinha, TV/PS5, encerramento de servidor/disco, cálculo do contador, notas de simulação/Cloud e confirmação redundante de sucesso. Preservar estados, dados antigos, erros e confirmações pendentes. Esta instrução posterior substitui a obrigação anterior de mostrar estas notas nos popups. Não apagar ajuda de configuração ou validação dos formulários. Saúde/online normal não gera parágrafos repetidos; ausência de medições continua explícita e discreta, sem inventar zero.
 
 Apenas forma é comum; estores conservam abertura/parar/range, alarme distingue armação/disparo, contador permanece só leitura com escala e margem, multimédia/secretária conservam imagens interativas. Imagens, animações, arrasto e chaves de configuração intactos. Testado820×1180 com fixture fictícia (candeeiro,cozinha,termoventilador,multimédia,contador,ventoinha,alarme,EV),refresh funcional,zero atuações/erros e216 testes aprovados. Prova review/popups-cozinha-2.01.png.
+
+# Vermelho legível e horário próprio — 2.02
+
+Substitui o filtro escuro2.00: em red-night o fundo é preto, sem paisagem, e não acumular opacidade0,55 de bedside sobre texto/ícones. Usar vermelho claro sobre preto e ajuste moderado pela intensidade dim;settings no top layer tem paleta explícita. Preservar UI, acessibilidade e eventos. Não aplicar à Casa.
+
+Preferências opcionais redSchedule=night/custom,redStart,redEnd (HH:mm), validadas e exportadas na chave Meteo existente. Defaults night/23:00/07:00 preservam o modo anterior. night segue ativação de cabeceira;custom ativa vermelho no intervalo próprio, mesmo se cabeceira geral off, e fora dele regressa à cabeceira colorida ou dia conforme o horário geral. Color desativa vermelho. Intervalos atravessam meia-noite; início inclusivo/fim exclusivo;horas iguais significam24h. redActive no meteo-core é puro, sem pedidos/atuações. Inputs time usam onInput para guardar corretamente no Safari.
+
+Verificado820×1180,horário próprio dentro/fora,preferências mantidas ao reabrir definições,zero erros/comandos.218 testes aprovados incluindo limites/meia-noite/legados/validação/backup. Prova review/meteo-contraste-2.02.png.

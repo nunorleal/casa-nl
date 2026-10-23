@@ -33,7 +33,7 @@ test('unknown, stale or busy lamps never actuate; missing binding opens central 
 });
 test('Meteo preferences roundtrip with Casa backup; invalid imports preserve prior data',()=>{
  const B=require('../backup-core.js'),ids=['master','bedroom2','living','kitchen','bath1','bath2','hall','balcony'];
- const data={'casa-nl-realistic-v2':ids.map((id,i)=>({id,light:false,...(i<4?{blind:0}:{})})),'casa-nl-room-layout-v1':Object.fromEntries(ids.map(id=>[id,{name:null,lx:50,ly:50}])),'casa-nl-show-banners':true,'casa-nl-environment-v1':{mode:'auto',city:null},'casa-nl-meteo-v1':{seconds:true,temp:'F',night:'auto',focusSeconds:60,nightPalette:'red'},'casa-nl-screensaver-v1':{seconds:300}};
+ const data={'casa-nl-realistic-v2':ids.map((id,i)=>({id,light:false,...(i<4?{blind:0}:{})})),'casa-nl-room-layout-v1':Object.fromEntries(ids.map(id=>[id,{name:null,lx:50,ly:50}])),'casa-nl-show-banners':true,'casa-nl-environment-v1':{mode:'auto',city:null},'casa-nl-meteo-v1':{seconds:true,temp:'F',night:'auto',focusSeconds:60,nightPalette:'red',redSchedule:'custom',redStart:'22:30',redEnd:'07:15'},'casa-nl-screensaver-v1':{seconds:300}};
  const m=new Map(Object.entries(data).map(([k,v])=>[k,JSON.stringify(v)])),storage={get length(){return m.size},key:i=>[...m.keys()][i],getItem:k=>m.get(k),setItem:(k,v)=>m.set(k,v),removeItem:k=>m.delete(k)};
  const backup=B.parse(JSON.stringify(B.create(storage,'1.33')));B.restore(storage,backup);assert.deepEqual(JSON.parse(storage.getItem('casa-nl-meteo-v1')),data['casa-nl-meteo-v1']);
  assert.deepEqual(JSON.parse(storage.getItem('casa-nl-screensaver-v1')),{seconds:300});
@@ -61,3 +61,6 @@ test('Real temperature bridge exposes only sensor reading and quality; missing, 
 });
 
 test('night palette accepts red or existing color and rejects malformed preferences',()=>{for(const nightPalette of ['red','color'])assert.deepEqual(preferences({nightPalette}),{nightPalette});for(const nightPalette of ['blue',true,0,null])assert.throws(()=>preferences({nightPalette}));assert.deepEqual(preferences({}),{})});
+
+test('red hours handle midnight, daytime, boundaries and legacy night activation',()=>{const {redActive}=require('../meteo-core.js'),p={nightPalette:'red',redSchedule:'custom',redStart:'22:30',redEnd:'07:15'};for(const n of [0,434,1350,1439])assert.equal(redActive(p,n,false),true);for(const n of [435,900,1349])assert.equal(redActive(p,n,true),false);assert.equal(redActive({...p,redStart:'09:00',redEnd:'11:00'},600,false),true);assert.equal(redActive({...p,redStart:'09:00',redEnd:'11:00'},660,true),false);assert.equal(redActive({...p,redStart:'09:00',redEnd:'09:00'},800,false),true);assert.equal(redActive({nightPalette:'red'},800,true),true);assert.equal(redActive({nightPalette:'red'},800,false),false);assert.equal(redActive({...p,nightPalette:'color'},0,true),false)});
+test('red schedule preferences validate before storage or import',()=>{const p={redSchedule:'custom',redStart:'22:30',redEnd:'07:15'};assert.deepEqual(preferences(p),p);for(const bad of [{redSchedule:'on'},{redStart:'24:00'},{redEnd:'07:60'},{redStart:12}])assert.throws(()=>preferences(bad))});

@@ -11,3 +11,7 @@ Verificado em820×1180: ampliação automática, regresso com um toque, preferê
 ## Cores noturnas — 2.00
 
 Definições → Modo de cabeceira → Cores do modo noturno permite escolher Vermelho ou Colorido esbatido. A escolha só entra em vigor quando o modo de cabeceira está ativo, respeitando o horário automático. Vermelho aplica-se a toda a interface, incluindo definições e relógio ampliado; Escurecimento também reduz a intensidade do vermelho. Colorido esbatido conserva o comportamento anterior e é a opção por omissão. A preferência é guardada e incluída no backup JSON.
+
+## Contraste e horas do vermelho — 2.02
+
+O vermelho passa a usar fundo preto e letras mais claras, sem escurecer o texto duas vezes. Nas definições, escolher Vermelho → Horário do vermelho → Escolher horas para definir «Vermelho das» e «Até às». Esse intervalo ativa o vermelho por si; fora dele aplica-se a aparência normal ou a cabeceira colorida. «Seguir modo de cabeceira» mantém a ativação pelo modo/horário geral. O intervalo pode atravessar a meia-noite; horas iguais ativam24h. Horário guardado e exportado no backup JSON, compatível com preferências antigas.

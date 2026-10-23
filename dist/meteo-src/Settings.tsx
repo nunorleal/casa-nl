@@ -231,7 +231,18 @@ export function Settings({
               <option value="red">Vermelho</option>
             </select>
           </label>
-          <p>A paleta escolhida aplica-se apenas quando o modo de cabeceira está ativo, incluindo a vista ampliada.</p>
+          {value.nightPalette === "red" && <>
+            <label>Horário do vermelho
+              <select value={value.redSchedule} onChange={(e) => set("redSchedule", e.target.value as Prefs["redSchedule"])}>
+                <option value="night">Seguir modo de cabeceira</option>
+                <option value="custom">Escolher horas</option>
+              </select>
+            </label>
+            {value.redSchedule === "custom" && <div className="schedule">
+              <label>Vermelho das<input aria-label="Início do vermelho" type="time" value={value.redStart} onInput={(e) => set("redStart", e.currentTarget.value || "23:00")} /></label>
+              <label>Até às<input aria-label="Fim do vermelho" type="time" value={value.redEnd} onInput={(e) => set("redEnd", e.currentTarget.value || "07:00")} /></label>
+            </div>}
+          </>}
           <div className="schedule">
             <label>
               Das

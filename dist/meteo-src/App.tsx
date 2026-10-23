@@ -4,6 +4,7 @@ import { useShellyLamp } from "./useShellyLamp";
 import { assetUrl } from "./assets";
 import { APP_VERSION } from "./app-info";
 import { useEffect, useRef, useState } from "react";
+import { redActive } from "../meteo-core.js";
 import { useFocusView } from "./useFocusView";
 import {
   Settings as Gear,
@@ -194,10 +195,16 @@ export default function App() {
   const localMinutes =
     +fmt(now, tz, { hour: "2-digit", hourCycle: "h23" }) * 60 +
     +fmt(now, tz, { minute: "2-digit" });
-  const night =
+  const scheduledNight =
     prefs.night === "on" ||
     (prefs.night === "auto" &&
       isNightSchedule(localMinutes, prefs.start, prefs.end));
+  const red = redActive(prefs, localMinutes, scheduledNight);
+  const night = scheduledNight || red;
+  useEffect(() => {
+    document.documentElement.classList.toggle("red-night", red);
+    return () => document.documentElement.classList.remove("red-night");
+  }, [red]);
   const scene =
     prefs.demo !== "auto"
       ? prefs.demo
@@ -267,7 +274,7 @@ export default function App() {
         className={"night-veil " + (night ? "on" : "")}
         style={{ opacity: night ? prefs.dim / 100 : 0 }}
       />
-      <main data-night-palette={night ? prefs.nightPalette : "day"} className={[night ? "bedside" : "", focus.expanded ? "focus-view" : ""].filter(Boolean).join(" ")} data-focus-view={focus.expanded ? "expanded" : "normal"}>
+      <main data-night-palette={red ? "red" : night ? "color" : "day"} className={[night ? "bedside" : "", focus.expanded ? "focus-view" : ""].filter(Boolean).join(" ")} data-focus-view={focus.expanded ? "expanded" : "normal"}>
         <nav className="topbar">
           <div className="brand">
             <span className="wordmark">
@@ -604,7 +611,7 @@ export default function App() {
           onClose={() => setOpen(false)}
         />
       )}
-      {night && prefs.nightPalette === "red" && <div className="night-red-filter" aria-hidden="true" style={{backgroundColor: `rgb(${Math.round(255 * (1 - prefs.dim / 100))}, 0, 0)`}} />}
+      {red && <div className="night-red-filter" aria-hidden="true" style={{backgroundColor: `rgb(${Math.round(255 * (1 - prefs.dim / 500))}, ${Math.round(76 * (1 - prefs.dim / 500))}, ${Math.round(64 * (1 - prefs.dim / 500))})`}} />}
     </>
   );
 }
