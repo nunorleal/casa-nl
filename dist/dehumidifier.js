@@ -15,7 +15,7 @@
  function drawLighting(){const r=rooms.find(r=>r.id===position.room);if(!r)return;const night=CasaEnvironment.darkness(r,rooms)*(1-CasaEnvironment.electricOpacity(r,rooms));object.style.setProperty('--dehumidifier-night',String(night));dialog.style.setProperty('--dehumidifier-night',String(night))}
  function draw(){const d=CasaShelly.dehumidifierSnapshot(),name=rooms.find(r=>r.id===position.room)?.name||'Casa de banho 1',label=!d.configured?'Por associar':d.on===true?'Ligado':d.on===false?'Desligado':d.lastReading?'Última leitura: '+(d.lastReading.on?'ligado':'desligado'):'Por confirmar';
   object.dataset.power=d.on===true?'on':d.on===false?'off':'unknown';object.setAttribute('aria-label','Desumidificador · '+name+' · '+label+'. Abrir controlos e definições');$('dehumidifier-location').textContent=name;$('dehumidifier-state').textContent=label;updatePower(d);
-  const r=d.reading;$('dehumidifier-quality').textContent=!d.configured?'Associe o Shelly nas definições.':!r?'A aguardar consulta.':r.error?'Consulta indisponível.':r.missing?'Dispositivo não encontrado.':!r.online?'Shelly offline.':!r.hasOutput?'Saída não encontrada: confirme o canal.':d.on===null?'Leitura inválida ou desatualizada.':'Estado da alimentação confirmado pelo Shelly.';
+  const r=d.reading;$('dehumidifier-quality').textContent=!d.configured?'Associe o Shelly nas definições.':!r?'A aguardar consulta.':r.error?'Consulta indisponível.':r.missing?'Dispositivo não encontrado.':!r.online?'Shelly offline.':!r.hasOutput?'Saída não encontrada: confirme o canal.':d.on===null?'Leitura inválida ou desatualizada.':'';
   $('dehumidifier-message').textContent=d.message;$('dehumidifier-refresh').disabled=d.busy||!d.configured;
   drawLighting();
  }

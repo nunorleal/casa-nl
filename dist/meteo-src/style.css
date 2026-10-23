@@ -1570,3 +1570,27 @@ button:disabled {
 
 /* The Shelly measurement stays secondary to the city forecast. */
 .real-temperature{display:flex;align-items:baseline;flex-wrap:wrap;gap:3px 8px;margin:5px 0 8px;font-size:13px;line-height:1.3;color:#ffffffe0;letter-spacing:0}.real-temperature>span{font-size:12px;font-weight:450;color:#ffffffb8}.real-temperature>strong{font-size:20px;font-weight:550;letter-spacing:-.3px;font-variant-numeric:tabular-nums}.real-temperature>small{font-size:10px;color:#ffffffb8}.real-temperature[data-status=last]{color:#fff4d6}@media(max-width:600px){.real-temperature>strong{font-size:18px}.real-temperature{margin-bottom:6px}}
+
+/* Automatic clock/weather view; the first tap only dismisses this layer. */
+main.focus-view{position:fixed;inset:0;width:100%;max-width:none;height:100dvh;min-height:0;margin:0;padding:3dvh 3vw;display:flex;align-items:center;justify-content:center;overflow:hidden}
+main.focus-view>:not(.hero){display:none!important}
+.focus-view .hero{width:min(94vw,1100px);max-width:none;min-height:90dvh;max-height:94dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2dvh;margin:0;padding:0;text-align:center}
+.focus-view .hero .date>span{font-size:clamp(26px,min(6vw,5dvh),54px);line-height:1.15}
+.focus-view .hero .date p{font-size:clamp(16px,min(3vw,3dvh),28px);margin:7px 0 0}
+.focus-view .hero .clock{font-size:clamp(76px,min(30vw,26dvh),320px);line-height:1;letter-spacing:-.04em;margin:1dvh 0;width:auto;max-width:100%;white-space:nowrap}
+.focus-view .hero .clock .seconds{font-size:.2em;letter-spacing:0}.focus-view .hero .clock .period{font-size:.13em;letter-spacing:0}
+.focus-view .hero .location{margin:0;gap:8px}.focus-view .hero .location h1{font-size:clamp(20px,min(4vw,4dvh),36px)}.focus-view .hero .location svg{width:24px;height:24px}
+.focus-view .hero .current-summary{width:auto;max-width:100%;margin:2dvh 0 0;gap:clamp(18px,3vw,42px);justify-content:center;align-items:center}
+.focus-view .hero .current-summary>.weather-icon{width:clamp(100px,min(23vw,22dvh),240px);height:clamp(90px,min(21vw,20dvh),220px);flex-shrink:0}
+.focus-view .hero .temperature{font-size:clamp(68px,min(18vw,17dvh),180px);line-height:1.05}
+.focus-view .hero .condition h2{font-size:clamp(20px,min(4vw,3.8dvh),36px);line-height:1.2}
+.focus-view .hero .condition p{font-size:clamp(13px,min(2.5vw,2.5dvh),24px);line-height:1.4}
+.focus-view .hero .real-temperature{font-size:clamp(15px,min(3vw,3dvh),28px)}
+.focus-view .hero .sun-times{font-size:clamp(13px,min(2.5vw,2.5dvh),22px);margin:2dvh 0 0;gap:24px}.focus-view .hero .sun-times svg{width:23px;height:23px}
+.focus-dismiss{position:fixed;inset:0;z-index:20;width:100%;height:100%;margin:0;padding:0;border:0;border-radius:0;background:transparent;color:#fff;cursor:pointer;touch-action:manipulation;outline:none;box-shadow:none}
+.focus-dismiss:hover,.focus-dismiss:focus-visible{background:transparent;outline:none;box-shadow:none}.focus-dismiss span{position:absolute;bottom:max(12px,env(safe-area-inset-bottom));left:0;right:0;text-align:center;font-size:11px;letter-spacing:.04em;opacity:.6;text-shadow:0 1px 4px #0009}
+.focus-view .hero .real-temperature strong{font-size:clamp(22px,min(4vw,3.6dvh),36px)}.focus-view .hero .real-temperature>span{font-size:clamp(12px,min(2vw,2dvh),18px)}
+
+/* Red-only night palette covers every visual layer, including settings and focus view.
+   Multiplication removes green/blue channels without changing layout or hit targets. */
+.night-red-filter{position:fixed;inset:0;z-index:10000;pointer-events:none;mix-blend-mode:multiply}

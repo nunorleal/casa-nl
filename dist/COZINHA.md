@@ -25,3 +25,7 @@ Na planta, apenas quando a máquina está a trabalhar, aparece um pequeno símbo
 ## Atividade da caldeira — 1.87
 
 A caldeira Bosch usa agora o mesmo limiar estrito de >10 W e as mesmas regras de validade das máquinas. O seu símbolo é uma caldeira com chama verde pulsante, na planta e no popup. Até 10 W não aparece na planta; leituras inválidas ficam por confirmar. A chama representa atividade elétrica inferida do consumo, não uma confirmação da chama física ou temperatura. Sem novos pedidos Cloud ou atuação automática. Movimento reduzido desativa a pulsação. A fixture `?kitchen=normal&boileron` usa apenas dados fictícios.
+
+## Paleta azul — 1.96
+
+Realce de hover/foco e símbolos de atividade das máquinas de lavar e caldeira passam a tons azuis dos banners, incluindo a indicação A trabalhar no popup. Preservar limiar >10W, disponibilidade, animações e comandos existentes. A mudança de realces também abrange consola, secretária e os novos acessos aos estores pelas janelas.

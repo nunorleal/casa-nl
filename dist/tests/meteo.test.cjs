@@ -33,7 +33,7 @@ test('unknown, stale or busy lamps never actuate; missing binding opens central 
 });
 test('Meteo preferences roundtrip with Casa backup; invalid imports preserve prior data',()=>{
  const B=require('../backup-core.js'),ids=['master','bedroom2','living','kitchen','bath1','bath2','hall','balcony'];
- const data={'casa-nl-realistic-v2':ids.map((id,i)=>({id,light:false,...(i<4?{blind:0}:{})})),'casa-nl-room-layout-v1':Object.fromEntries(ids.map(id=>[id,{name:null,lx:50,ly:50}])),'casa-nl-show-banners':true,'casa-nl-environment-v1':{mode:'auto',city:null},'casa-nl-meteo-v1':{seconds:true,temp:'F',night:'auto'},'casa-nl-screensaver-v1':{seconds:300}};
+ const data={'casa-nl-realistic-v2':ids.map((id,i)=>({id,light:false,...(i<4?{blind:0}:{})})),'casa-nl-room-layout-v1':Object.fromEntries(ids.map(id=>[id,{name:null,lx:50,ly:50}])),'casa-nl-show-banners':true,'casa-nl-environment-v1':{mode:'auto',city:null},'casa-nl-meteo-v1':{seconds:true,temp:'F',night:'auto',focusSeconds:60,nightPalette:'red'},'casa-nl-screensaver-v1':{seconds:300}};
  const m=new Map(Object.entries(data).map(([k,v])=>[k,JSON.stringify(v)])),storage={get length(){return m.size},key:i=>[...m.keys()][i],getItem:k=>m.get(k),setItem:(k,v)=>m.set(k,v),removeItem:k=>m.delete(k)};
  const backup=B.parse(JSON.stringify(B.create(storage,'1.33')));B.restore(storage,backup);assert.deepEqual(JSON.parse(storage.getItem('casa-nl-meteo-v1')),data['casa-nl-meteo-v1']);
  assert.deepEqual(JSON.parse(storage.getItem('casa-nl-screensaver-v1')),{seconds:300});
@@ -59,3 +59,5 @@ test('Real temperature bridge exposes only sensor reading and quality; missing, 
  for(const value of [null,undefined,NaN,Infinity,'18',151]){const d=C.realTemperature(binding,{...r,temperature:value},101);assert.equal(d.temperature,null);assert.equal(d.status,'unavailable')}
  assert.equal(C.realTemperature(binding,null,101).status,'pending');assert.deepEqual(C.realTemperature(null,r,101),{configured:false,temperature:null,status:'unconfigured'});
 });
+
+test('night palette accepts red or existing color and rejects malformed preferences',()=>{for(const nightPalette of ['red','color'])assert.deepEqual(preferences({nightPalette}),{nightPalette});for(const nightPalette of ['blue',true,0,null])assert.throws(()=>preferences({nightPalette}));assert.deepEqual(preferences({}),{})});
